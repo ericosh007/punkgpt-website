@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PunkGPT - Digital Vandalism as a Service</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-green: #00ff88;
+            --hot-pink: #ff1493;
+            --electric-blue: #0080ff;
+            --dark-purple: #1a0033;
+            --black: #0a0a0a;
+        }
+        
+        body {
+            font-family: 'Orbitron', 'Courier New', monospace;
+            background: #000;
+            color: var(--neon-green);
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+        
+        /* Enhanced Grid Background - matches marquee */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a1a 50%, #0a0a1a 100%);
+            z-index: -3;
+        }
+        
+        .cyber-grid::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 10s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Scanner Line - from marquee */
+        .scanner {
+            position: fixed;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff88, transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.5;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        /* Enhanced Floating Particles System */
+        .particle-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #00ff88;
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+        
+        /* Small particles */
+        .particle.small {
+            width: 2px;
+            height: 2px;
+            box-shadow: 0 0 6px #00ff88;
+            animation: floatUp 15s linear infinite;
+        }
+        
+        /* Medium particles */
+        .particle.medium {
+            width: 4px;
+            height: 4px;
+            box-shadow: 0 0 10px #00ff88;
+            animation: floatUp 12s linear infinite;
+        }
+        
+        /* Large particles */
+        .particle.large {
+            width: 6px;
+            height: 6px;
+            box-shadow: 0 0 15px #00ff88;
+            animation: floatUp 10s linear infinite;
+        }
+        
+        /* Glowing orbs */
+        .particle.orb {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #00ff88 0%, transparent 60%);
+            box-shadow: 0 0 30px #00ff88, 0 0 60px #00ff8850;
+            animation: floatDiagonal 20s ease-in-out infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(30px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes floatDiagonal {
+            0% {
+                transform: translate(-100px, 100vh);
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.3;
+            }
+            75% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translate(calc(100vw + 100px), -100vh);
+                opacity: 0;
+            }
+        }
+        
+        /* Generate multiple particles */
+        .particle:nth-child(1) { left: 5%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 10%; animation-delay: 1s; }
+        .particle:nth-child(3) { left: 15%; animation-delay: 2s; }
+        .particle:nth-child(4) { left: 20%; animation-delay: 3s; }
+        .particle:nth-child(5) { left: 25%; animation-delay: 4s; }
+        .particle:nth-child(6) { left: 30%; animation-delay: 5s; }
+        .particle:nth-child(7) { left: 35%; animation-delay: 6s; }
+        .particle:nth-child(8) { left: 40%; animation-delay: 7s; }
+        .particle:nth-child(9) { left: 45%; animation-delay: 8s; }
+        .particle:nth-child(10) { left: 50%; animation-delay: 9s; }
+        .particle:nth-child(11) { left: 55%; animation-delay: 10s; }
+        .particle:nth-child(12) { left: 60%; animation-delay: 11s; }
+        .particle:nth-child(13) { left: 65%; animation-delay: 12s; }
+        .particle:nth-child(14) { left: 70%; animation-delay: 13s; }
+        .particle:nth-child(15) { left: 75%; animation-delay: 14s; }
+        .particle:nth-child(16) { left: 80%; animation-delay: 15s; }
+        .particle:nth-child(17) { left: 85%; animation-delay: 16s; }
+        .particle:nth-child(18) { left: 90%; animation-delay: 17s; }
+        .particle:nth-child(19) { left: 95%; animation-delay: 18s; }
+        .particle:nth-child(20) { left: 3%; animation-delay: 19s; }
+        
+        /* Scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 136, 0.03) 2px,
+                    rgba(0, 255, 136, 0.03) 4px
+                );
+            pointer-events: none;
+            z-index: 1;
+            animation: scanlineMove 8s linear infinite;
+        }
+        
+        @keyframes scanlineMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+        
+        /* Digital noise */
+        .digital-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+            animation: noiseShift 0.5s steps(10) infinite;
+        }
+        
+        @keyframes noiseShift {
+            0% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(5%, -10%); }
+            30% { transform: translate(-10%, 5%); }
+            40% { transform: translate(10%, 10%); }
+            50% { transform: translate(-5%, 10%); }
+            60% { transform: translate(5%, 5%); }
+            70% { transform: translate(-10%, -5%); }
+            80% { transform: translate(10%, -10%); }
+            90% { transform: translate(-5%, 5%); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        /* Custom logo in header */
+        .custom-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            z-index: 10;
+            opacity: 0.9;
+            transition: all 0.3s;
+        }
+        
+        .custom-logo:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px var(--neon-pink));
+        }
+        
+        .custom-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Header with distorted globe logo */
+        .header {
+            position: relative;
+            padding: 100px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--neon-pink);
+            overflow: hidden;
+        }
+        
+        /* SVG Logo */
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        .svg-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            filter: drop-shadow(0 0 30px var(--neon-pink));
+            animation: logoFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        .svg-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Neon Sign Text Effect */
+        .logo-text {
+            font-size: clamp(60px, 12vw, 100px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            position: relative;
+            display: inline-block;
+            color: #fff;
+            text-shadow: 
+                0 0 10px var(--neon-pink),
+                0 0 20px var(--neon-pink),
+                0 0 30px var(--neon-pink),
+                0 0 40px var(--hot-pink),
+                0 0 70px var(--hot-pink),
+                0 0 80px var(--hot-pink),
+                0 0 100px var(--hot-pink),
+                0 0 150px var(--hot-pink);
+            animation: neonFlicker 2s infinite alternate;
+        }
+        
+        @keyframes neonFlicker {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px var(--neon-pink),
+                    0 0 20px var(--neon-pink),
+                    0 0 30px var(--neon-pink),
+                    0 0 40px var(--hot-pink),
+                    0 0 70px var(--hot-pink),
+                    0 0 80px var(--hot-pink),
+                    0 0 100px var(--hot-pink),
+                    0 0 150px var(--hot-pink);
+                filter: brightness(1);
+            }
+            50% {
+                text-shadow: 
+                    0 0 5px var(--neon-pink),
+                    0 0 10px var(--neon-pink),
+                    0 0 15px var(--neon-pink),
+                    0 0 20px var(--hot-pink),
+                    0 0 35px var(--hot-pink),
+                    0 0 40px var(--hot-pink),
+                    0 0 50px var(--hot-pink),
+                    0 0 75px var(--hot-pink);
+                filter: brightness(0.95);
+            }
+        }
+        
+        /* Neon tube outline effect */
+        .logo-text::before {
+            content: 'PUNKGPT';
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--neon-cyan);
+            text-shadow: 
+                0 0 10px var(--neon-cyan),
+                0 0 20px var(--neon-cyan),
+                0 0 30px var(--electric-blue);
+            z-index: -1;
+            animation: neonPulse 3s infinite alternate;
+        }
+        
+        @keyframes neonPulse {
+            0%, 100% {
+                -webkit-text-stroke: 2px var(--neon-cyan);
+                opacity: 0.5;
+            }
+            50% {
+                -webkit-text-stroke: 2px var(--electric-blue);
+                opacity: 0.8;
+            }
+        }
+        
+        /* Electric flicker effect */
+        .logo-text::after {
+            content: 'PUNKGPT';
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: var(--neon-pink);
+            opacity: 0;
+            z-index: -2;
+            filter: blur(30px);
+            animation: electricFlicker 0.1s infinite;
+        }
+        
+        @keyframes electricFlicker {
+            0% { opacity: 0; }
+            10% { opacity: 0; }
+            10.1% { opacity: 1; }
+            10.2% { opacity: 0; }
+            20% { opacity: 0; }
+            20.1% { opacity: 0.5; }
+            20.2% { opacity: 0; }
+            30% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        
+        .tagline {
+            margin-top: 20px;
+            font-size: clamp(14px, 3vw, 20px);
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: flicker 2s infinite;
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 0.8; }
+            93% { opacity: 1; }
+            94% { opacity: 0.2; }
+            95% { opacity: 1; }
+        }
+        
+        /* Manifesto Section */
+        .manifesto {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .manifesto h2 {
+            font-size: clamp(36px, 7vw, 56px);
+            margin-bottom: 40px;
+            text-align: center;
+            color: var(--neon-pink);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 30px currentColor;
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 30px currentColor; }
+            50% { text-shadow: 0 0 50px currentColor, 0 0 100px currentColor; }
+        }
+        
+        .manifesto-text {
+            font-size: 20px;
+            line-height: 1.8;
+            color: var(--neon-cyan);
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 5px currentColor;
+        }
+        
+        .manifesto-text .toxic {
+            color: var(--neon-pink);
+            font-weight: 900;
+            font-size: 110%;
+            animation: toxicPulse 1s infinite;
+        }
+        
+        @keyframes toxicPulse {
+            0%, 100% { 
+                color: var(--neon-pink);
+                text-shadow: 0 0 10px currentColor;
+            }
+            50% { 
+                color: var(--hot-pink);
+                text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+                transform: scale(1.05);
+            }
+        }
+        
+        .manifesto-text .burn {
+            color: var(--neon-green);
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-color: var(--hot-pink);
+            text-underline-offset: 3px;
+            animation: burnFlicker 0.5s infinite alternate;
+        }
+        
+        @keyframes burnFlicker {
+            from { text-decoration-color: var(--hot-pink); }
+            to { text-decoration-color: var(--neon-cyan); }
+        }
+        
+        .manifesto-text::selection {
+            background: var(--neon-pink);
+            color: var(--black);
+        }
+        
+        .manifesto-text .toxic::selection {
+            background: var(--neon-cyan);
+            color: var(--black);
+        }
+        
+        .manifesto-text .burn::selection {
+            background: var(--hot-pink);
+            color: white;
+        }
+        
+        /* Feature Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 80px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+        
+        .feature-card {
+            background: rgba(10, 10, 10, 0.9);
+            border: 2px solid var(--neon-pink);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            clip-path: polygon(
+                0 0,
+                calc(100% - 15px) 0,
+                100% 15px,
+                100% 100%,
+                15px 100%,
+                0 calc(100% - 15px)
+            );
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0, 255, 255, 0.3), 
+                transparent
+            );
+            transition: left 0.5s;
+        }
+        
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        
+        .feature-card:hover::before {
+            left: 100%;
+        }
+        
+        .feature-card:hover::after {
+            border-color: var(--neon-cyan);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 255, 255, 0.2),
+                inset 0 0 40px rgba(255, 0, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-cyan);
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 
+                0 20px 40px rgba(0, 255, 255, 0.3),
+                0 0 80px rgba(255, 0, 255, 0.1);
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 0 30px var(--neon-cyan));
+        }
+        
+        .feature-card:hover .feature-title {
+            color: var(--hot-pink);
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px currentColor);
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+        
+        .feature-card:nth-child(1) .feature-icon { animation-delay: 0s; }
+        .feature-card:nth-child(2) .feature-icon { animation-delay: 0.5s; }
+        .feature-card:nth-child(3) .feature-icon { animation-delay: 1s; }
+        .feature-card:nth-child(4) .feature-icon { animation-delay: 1.5s; }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        .feature-title::selection {
+            background: var(--neon-pink);
+            color: var(--black);
+            text-shadow: none;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            color: var(--neon-green);
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .feature-desc::selection {
+            background: var(--hot-pink);
+            color: white;
+            text-shadow: none;
+        }
+        
+        .feature-icon::selection {
+            background: var(--neon-cyan);
+            color: var(--black);
+        }
+        
+        /* Stats Section - CYBERPUNK STYLE */
+        .stats {
+            background: linear-gradient(90deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 2px solid var(--neon-pink);
+            border-bottom: 2px solid var(--neon-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            animation: scanLine 3s linear infinite;
+        }
+        
+        @keyframes scanLine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .stat-item {
+            position: relative;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-pink), var(--hot-pink), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+            animation: statGlitch 5s infinite;
+            line-height: 1.2;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes statGlitch {
+            0%, 100% { 
+                filter: none;
+                transform: none;
+            }
+            95% {
+                filter: blur(0);
+            }
+            96% {
+                filter: blur(2px);
+                transform: translateX(2px);
+            }
+            97% {
+                filter: blur(0);
+                transform: translateX(-2px);
+            }
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--neon-green);
+            margin-top: 10px;
+            text-shadow: 0 0 5px currentColor;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 100px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.9);
+            position: relative;
+        }
+        
+        .cta h2 {
+            font-size: clamp(40px, 8vw, 72px);
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: rgbShift 2s infinite;
+        }
+        
+        @keyframes rgbShift {
+            0%, 100% {
+                filter: hue-rotate(0deg);
+            }
+            33% {
+                filter: hue-rotate(120deg);
+            }
+            66% {
+                filter: hue-rotate(240deg);
+            }
+        }
+        
+        .cta-subtitle {
+            font-size: 18px;
+            color: var(--neon-cyan);
+            margin-bottom: 40px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(45deg, var(--neon-pink), var(--hot-pink));
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border: 2px solid var(--neon-cyan);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            margin: 10px;
+            clip-path: polygon(
+                20px 0,
+                100% 0,
+                100% calc(100% - 20px),
+                calc(100% - 20px) 100%,
+                0 100%,
+                0 20px
+            );
+            box-shadow: 
+                0 0 20px rgba(255, 0, 255, 0.4),
+                inset 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .download-btn:hover::before {
+            left: 100%;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 20px var(--neon-pink),
+                0 0 40px var(--neon-cyan),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            border-color: var(--neon-cyan);
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--black);
+            border-top: 1px solid var(--neon-pink);
+        }
+        
+        .footer-text {
+            font-size: 12px;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .logo-text {
+                letter-spacing: 5px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-btn {
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+        }
+        
+        /* Cursor trail */
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--neon-pink), transparent);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.5;
+            mix-blend-mode: screen;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+    <div class="digital-noise"></div>
+    <div class="scanner"></div>
+    <div class="cursor-trail" id="cursor"></div>
+    
+    <!-- Particle system -->
+    <div class="particle-container">
+        <!-- Small particles -->
+        <div class="particle small"></div>
+        <div class="particle small"></div>
+        <div class="particle small"></div>
+        <div class="particle small"></div>
+        <div class="particle small"></div>
+        <div class="particle small"></div>
+        <div class="particle small"></div>
+        <div class="particle small"></div>
+        
+        <!-- Medium particles -->
+        <div class="particle medium"></div>
+        <div class="particle medium"></div>
+        <div class="particle medium"></div>
+        <div class="particle medium"></div>
+        <div class="particle medium"></div>
+        <div class="particle medium"></div>
+        
+        <!-- Large particles -->
+        <div class="particle large"></div>
+        <div class="particle large"></div>
+        <div class="particle large"></div>
+        <div class="particle large"></div>
+        
+        <!-- Glowing orbs -->
+        <div class="particle orb"></div>
+        <div class="particle orb"></div>
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+         
+        
+        
+        <div class="logo-container">
+            <div class="svg-logo">
+               <img src="logo.png" alt="PunkGPT Logo" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <h1 class="logo-text">PUNKGPT</h1>
+        </div>
+        <p class="tagline">Digital Vandalism as a Service™</p>
+    </header>
+    
+    <!-- Manifesto -->
+    <section class="manifesto">
+        <h2>The Internet has Gone Dark</h2>
+        <p class="manifesto-text">
+            <span class="toxic">90% of the web is AI garbage.</span> The dark internet has arrived. Every LinkedIn post. 
+            Every X thread. Every Medium article. Written by machines, pretending to be human. 
+            <span class="burn">"Thrilled to announce"</span> is the death rattle of creativity. 
+            <span class="burn">"Excited to share"</span> is the machines mocking us.
+            <br><br>
+            The algorithms are winning. The darkness is spreading. Your feed is a <span class="toxic">DIGITAL WASTELAND</span> 
+            of synthetic thoughts. But we're not surrendering. We're <span class="burn">fighting back.</span>
+            <br><br>
+            PunkGPT is your weapon against the dark. We expose the fakes. We burn the bots. 
+            We're the resistance. <span class="toxic">THE LIGHT IN THE DARKNESS.</span> Join us before it's too late.
+        </p>
+    </section>
+    
+    <!-- Features -->
+    <section class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3 class="feature-title">99.9999999% Accurate</h3>
+            <p class="feature-desc">Our AI hunts their AI. Training on millions of fake posts. We know every pattern in the darkness.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">💀</div>
+            <h3 class="feature-title">Public Execution</h3>
+            <p class="feature-desc">Neon graffiti tags expose the fakes. Light up the darkness. Show everyone who's real.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">🔥</div>
+            <h3 class="feature-title">Burn the Bots</h3>
+            <p class="feature-desc">Scorched earth policy. We're purging the dark internet one fake post at a time.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Always Hunting</h3>
+            <p class="feature-desc">24/7 detection. The darkness never rests. Neither does our resistance.</p>
+        </div>
+    </section>
+    
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" data-target="999999">0</div>
+                <div class="stat-label">Posts Tagged</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="99">0</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number infinity" data-infinity="true">0</div>
+                <div class="stat-label">Corps Mad</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Fight the Darkness</h2>
+        <p class="cta-subtitle">Burn it down. Tag fakes. Free the web.</p>
+        <a href="#" class="download-btn" onclick="alert('Chrome Extension dropping soon... Join the resistance against the dark internet.')">Get Chrome Extension</a>
+        <a href="#" class="download-btn" onclick="alert('Firefox add-on loading... Time to fight back against the machines.')">Get Firefox Add-on</a>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 PunkGPT • No Rights Reserved • Free the web</p>
+    </footer>
+    
+    <script>
+        // Cursor trail effect
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.getElementById('cursor');
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+        
+        // Dynamic particle generation
+        function createParticle() {
+            const particle = document.createElement('div');
+            const types = ['small', 'medium', 'large'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            particle.className = `particle ${type}`;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            
+            document.querySelector('.particle-container').appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                particle.remove();
+            }, 20000);
+        }
+        
+        // Generate particles continuously
+        setInterval(createParticle, 1000);
+        
+        // Console easter egg
+        console.log('%c PUNKGPT ', 'background: linear-gradient(90deg, #ff00ff, #00ffff); color: #000; font-size: 50px; font-weight: bold; padding: 20px; text-shadow: 2px 2px 0 #00ff88;');
+        console.log('%c DIGITAL VANDALISM AS A SERVICE™ ', 'color: #00ff88; font-size: 20px; font-weight: bold; background: #000; padding: 10px;');
+        console.log('%c The dark internet is here. 90% is AI garbage. ', 'color: #ff00ff; font-size: 16px;');
+        console.log('%c We\'re the resistance. We\'re fighting back. ', 'color: #00ffff; font-size: 14px; font-weight: bold;');
+        console.log('%c\n⚠ Join us before the machines win. ', 'color: #ff1493; font-size: 12px;');
+        
+        // Stat counter animation
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 20);
+        }
+        
+        // Animate percentage (no % symbol during animation)
+        function animatePercentage(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + '%';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + '%';
+                }
+            }, 20);
+        }
+        
+        // Animate to infinity with slot machine effect
+        function animateToInfinity(element) {
+            let current = 0;
+            const maxNumber = 999999;
+            const increment = maxNumber / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= maxNumber) {
+                    // Switch to infinity symbol at the end - keep same size as other stats
+                    element.textContent = '∞';
+                    clearInterval(timer);
+                    // Add flashing effect after reaching infinity
+                    element.style.animation = 'infinityFlash 1s infinite';
+                } else {
+                    // Show rapidly increasing numbers
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 20);
+        }
+        
+        // Add infinity flash animation to styles
+        const style = document.createElement('style');
+        style.textContent += `
+            @keyframes infinityFlash {
+                0%, 100% { 
+                    opacity: 1;
+                    filter: brightness(1);
+                }
+                50% { 
+                    opacity: 0.3;
+                    filter: brightness(1.5);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Animate stats on scroll into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    if (statNumber) {
+                        if (statNumber.dataset.infinity === 'true') {
+                            animateToInfinity(statNumber);
+                        } else if (statNumber.dataset.target) {
+                            const target = parseInt(statNumber.dataset.target);
+                            if (statNumber.dataset.target === '99') {
+                                animatePercentage(statNumber, target);
+                            } else {
+                                animateCounter(statNumber, target);
+                            }
+                            delete statNumber.dataset.target; // Prevent re-animation
+                        }
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+        
+        document.querySelectorAll('.stat-item').forEach(item => {
+            observer.observe(item);
+        });
+        
+        // Add logo hover effect
+        const globeLogo = document.querySelector('.svg-logo');
+        if (globeLogo) {
+            globeLogo.addEventListener('mouseenter', () => {
+                globeLogo.style.filter = 'drop-shadow(0 0 50px var(--neon-cyan))';
+            });
+            globeLogo.addEventListener('mouseleave', () => {
+                globeLogo.style.filter = 'drop-shadow(0 0 30px var(--neon-pink))';
+            });
+        }
+    </script>
+</body>
+</html>
